@@ -369,7 +369,7 @@ class realignment:
                         if len(iteration_results) > 0:
 
 
-                            results = results + assign_discordants(iteration_results,iteration_discordants,insert_metrics[0],insert_metrics[1],False)
+                            results = results + assign_discordants(iteration_results,iteration_discordants,insert_metrics[0],insert_metrics[1])
 
                         elif len(iteration_discordants) > 0:
 
