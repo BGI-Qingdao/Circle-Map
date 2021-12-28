@@ -676,6 +676,8 @@ def get_realignment_intervals(bed_prior,interval_extension,interval_p_cutoff,ver
 
                     extended.append([row['chrom'], row['start'], int(round(end)),float(row['probability'])])
                 ret_data = pd.DataFrame.from_records(extended, columns=['chrom', 'start', 'end','probability'])
+                ret_data['start'] = ret_data.start.astype(int)
+                ret_data['end'] = ret_data.end.astype(int)
                 ret_data = ret_data.sort_values(by=['chrom', 'start','end'],ascending=[True,True,True])
                 ret_data = ret_data.groupby((ret_data.end.shift()-ret_data.start).lt(0).cumsum()).agg({'chrom':'first','start':'first','end':'max','probability':'first'})
                 return (ret_data)
@@ -720,6 +722,8 @@ def get_realignment_intervals(bed_prior,interval_extension,interval_p_cutoff,ver
 
             ret_data = pd.DataFrame.from_records(extended, columns=['chrom', 'start', 'end','probability'])
             ret_data = ret_data.sort_values(by=['chrom', 'start','end'],ascending=[True,True,True])
+            ret_data['start'] = ret_data.start.astype(int)
+            ret_data['end'] = ret_data.end.astype(int)
             ret_data = ret_data.groupby((ret_data.end.shift()-ret_data.start).lt(0).cumsum()).agg({'chrom':'first','start':'first','end':'max','probability':'first'})
             return (ret_data)
 
@@ -1289,8 +1293,8 @@ def merge_final_output(bam,results,begin,splits,dir,fraction,pid):
     for interval in unfiltered_output:
 
         if (int(interval[4])+int(interval[3])) >= splits:
-            if int(interval[1]) != 0:
-                interval[1] = int(interval[1])+1
+            #if int(interval[1]) != 0:
+            #    interval[1] = int(interval[1])+1
             filtered.append(interval)
 
     filtered_output = bt.BedTool(filtered)
